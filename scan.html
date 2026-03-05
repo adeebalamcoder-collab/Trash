@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bharat.io – QR Contact Profile</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Main Styles -->
+  <style>
+    /* style.css (embedded for completeness) */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f7fc;
+      color: #1e2b3c;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* navbar */
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: -0.5px;
+      color: #0a2b4e;
+    }
+
+    .logo span {
+      color: #d44b2b;
+      font-weight: 600;
+    }
+
+    nav a {
+      margin-left: 2rem;
+      text-decoration: none;
+      color: #2c3e50;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: #d44b2b;
+    }
+
+    /* main section */
+    .section {
+      flex: 1;
+      padding: 3rem 1.5rem;
+    }
+
+    .light {
+      background: #ffffff;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #0f2b42;
+      margin-bottom: 1.2rem;
+      border-left: 6px solid #d44b2b;
+      padding-left: 1.5rem;
+    }
+
+    p {
+      margin-bottom: 1.5rem;
+      color: #2d3f55;
+      font-weight: 400;
+    }
+
+    .warning-box {
+      background: #fff7e5;
+      border-left: 5px solid #e67e22;
+      padding: 1.2rem 1.8rem;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #7b4a1e;
+      margin: 2rem 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    }
+
+    /* owner card (loading + dynamic) */
+    .owner-card {
+      background: linear-gradient(145deg, #f9fbfd, #ffffff);
+      border-radius: 28px;
+      padding: 2rem 2rem 1.8rem 2rem;
+      box-shadow: 0 20px 30px -10px rgba(0,35,70,0.12);
+      border: 1px solid rgba(190, 210, 230, 0.4);
+      margin: 2rem 0 1.5rem;
+      transition: all 0.2s;
+    }
+
+    .owner-card h3 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #1f3a57;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .owner-card p {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    /* profile fields simulation */
+    .profile-field {
+      display: flex;
+      align-items: baseline;
+      margin: 1.2rem 0;
+      background: #f2f6fa;
+      padding: 0.8rem 1.2rem;
+      border-radius: 40px;
+    }
+
+    .field-label {
+      font-weight: 600;
+      min-width: 110px;
+      color: #2b4c73;
+    }
+
+    .field-value {
+      font-weight: 500;
+      color: #103456;
+    }
+
+    .badge {
+      background: #d44b2b10;
+      color: #b13e21;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      border: 1px solid #d44b2b30;
+      display: inline-block;
+    }
+
+    .btn-secondary {
+      background: white;
+      border: 2px solid #244b6b;
+      color: #244b6b;
+      padding: 0.9rem 2.6rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+      margin: 0.8rem 0 2rem;
+    }
+
+    .btn-secondary:hover {
+      background: #244b6b;
+      color: white;
+      border-color: #244b6b;
+    }
+
+    .note {
+      background: #ecf3fa;
+      padding: 1.3rem 2rem;
+      border-radius: 40px;
+      font-size: 0.95rem;
+      color: #1f3f5c;
+      text-align: center;
+      margin-top: 2rem !important;
+    }
+
+    /* footer */
+    .footer {
+      background: #102b3f;
+      color: #d4e0ec;
+      padding: 2.5rem 2rem;
+      margin-top: 2rem;
+      border-top: 1px solid #254a66;
+    }
+
+    .footer .container p {
+      margin-bottom: 0.8rem;
+      color: #cbdae7;
+    }
+
+    .footer .small {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    /* loading animation */
+    .loading-dots:after {
+      content: '.';
+      animation: dots 1.5s steps(5, end) infinite;
+    }
+
+    @keyframes dots {
+      0%, 20% { content: '.'; }
+      40% { content: '..'; }
+      60% { content: '...'; }
+      80%, 100% { content: ''; }
+    }
+
+    /* responsive */
+    @media (max-width: 600px) {
+      h2 { font-size: 1.8rem; }
+      .nav-container { flex-direction: column; gap: 0.8rem; }
+      nav a { margin: 0 1rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ===============================
+     NAVBAR
+================================ -->
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">Bharat<span>.io</span></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===============================
+     MAIN SECTION
+================================ -->
+<section class="section light">
+  <div class="container">
+
+    <!-- PAGE TITLE -->
+    <h2>Vehicle Contact Profile</h2>
+
+    <!-- INTRO TEXT -->
+    <p>You have scanned a Bharat.io QR sticker. This page allows you to connect with the vehicle owner or view their public business profile. The system is designed for genuine parking assistance and emergency communication only.</p>
+
+    <!-- WARNING -->
+    <div class="warning-box">
+      ⚠ This contact system must not be used for spam, promotional calls, marketing or harassment. Only genuine parking or emergency communication is allowed. Misuse may result in blocking of access.
+    </div>
+
+    <!-- ===============================
+         PROFILE DATA CONTAINER
+    ================================ -->
+    <div id="ownerData">
+      <!-- LOADING CARD (will be replaced by JS) -->
+      <div class="owner-card" id="loadingCard">
+        <h3>Loading Profile<span class="loading-dots"></span></h3>
+        <p>Please wait while we securely retrieve the profile information from the Bharat.io database. The QR sticker is being verified and matched with the registered vehicle profile.</p>
+      </div>
+    </div>
+
+    <!-- ===============================
+         DOWNLOAD BUTTON
+    ================================ -->
+    <div style="text-align: center; margin-top: 20px;">
+      <button id="downloadCard" class="btn-secondary">📸 Download Profile Card</button>
+    </div>
+
+    <!-- ===============================
+         INFORMATION NOTE
+    ================================ -->
+    <p class="note">This QR based contact system is designed to help citizens communicate with vehicle owners during parking conflicts or urgent situations. Please use this system responsibly.</p>
+
+    <!-- ===============================
+         ADDITIONAL NOTE
+    ================================ -->
+    <p class="note">If the person does not respond and the situation requires immediate attention, please contact local authorities.</p>
+
+  </div>
+</section>
+
+<!-- ===============================
+     QR SCAN ENGINE + html2canvas (just above footer)
+================================ -->
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+<!-- ===============================
+     FOOTER
+================================ -->
+<footer class="footer">
+  <div class="container">
+    <p>© 2026 Bharat.io — QR Vehicle Contact System</p>
+    <p class="small">Bharat.io provides a public contact layer for vehicles and local service professionals. The platform helps connect citizens with vehicle owners during real-world situations.</p>
+    <p class="small">This system is intended for genuine communication only. Abuse or spam use is strongly discouraged.</p>
+  </div>
+</footer>
+
+<!-- ===============================
+     scan.js (embedded logic)
+================================ -->
+<script>
+  (function() {
+    // ----- simulate profile load (replaces loading card after 1.2s) -----
+    const ownerDataDiv = document.getElementById('ownerData');
+
+    // Simulated owner profile (could come from QR code params)
+    const mockProfile = {
+      name: 'Arun Sharma',
+      vehicle: 'HR 26 BK 8901',
+      type: 'Electric SUV',
+      contact: '+91 98765 43210',
+      business: 'Sharma Electricals · ⚡ EV charger',
+      verified: true
+    };
+
+    function buildProfileCard(profile) {
+      const card = document.createElement('div');
+      card.className = 'owner-card';
+      card.id = 'realProfileCard';   // for download targeting
+      card.innerHTML = `
+        <h3 style="display: flex; justify-content: space-between; align-items: center;">
+          <span>👤 ${profile.name}</span>
+          <span class="badge">✓ BHARAT.IO VERIFIED</span>
+        </h3>
+        <div class="profile-field">
+          <span class="field-label">Vehicle</span>
+          <span class="field-value">${profile.vehicle} · ${profile.type}</span>
+        </div>
+        <div class="profile-field">
+          <span class="field-label">Contact</span>
+          <span class="field-value">${profile.contact}</span>
+        </div>
+        <div class="profile-field">
+          <span class="field-label">Business</span>
+          <span class="field-value">${profile.business}</span>
+        </div>
+        <p style="font-size:0.9rem; margin-top:1rem; color:#3a5e7e;"><span style="background:#d44b2b10; padding:0.2rem 0.8rem; border-radius:30px;">⏱️ Best reached 9am–7pm · emergency only</span></p>
+      `;
+      return card;
+    }
+
+    // Simulate network delay
+    setTimeout(() => {
+      // remove loading card
+      const container = document.getElementById('ownerData');
+      container.innerHTML = ''; // clear loading
+      const realCard = buildProfileCard(mockProfile);
+      container.appendChild(realCard);
+    }, 1200); // 1.2 sec realistic loading
+
+    // ----- download card using html2canvas (injected above footer) -----
+    document.getElementById('downloadCard').addEventListener('click', function() {
+      // find the profile card (either still loading or real one)
+      let targetCard = document.getElementById('realProfileCard');
+      if (!targetCard) {
+        // fallback: if loading still present, use that card
+        targetCard = document.querySelector('.owner-card');
+      }
+
+      if (!targetCard) {
+        alert('Profile card not found yet. Please wait a moment.');
+        return;
+      }
+
+      // Use html2canvas to capture card with style
+      html2canvas(targetCard, {
+        scale: 1.8,            // high res
+        backgroundColor: '#ffffff',
+        allowTaint: false,
+        useCORS: true,
+        logging: false,
+        windowWidth: targetCard.scrollWidth
+      }).then(canvas => {
+        // Create download link
+        const link = document.createElement('a');
+        link.download = `Bharat_Profile_${mockProfile.vehicle.replace(/\s/g,'_')}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(error => {
+        console.warn('html2canvas failed:', error);
+        alert('Could not generate image. You can take a screenshot manually.');
+      });
+    });
+
+    // optional: if download is clicked before load, show friendly message
+    // but we already fallback to whatever card exists
+  })();
+</script>
+
+<!-- small extra style for consistency if loading persists -->
+<style>
+  /* ensure loading card is same height */
+  .owner-card .loading-dots {
+    display: inline-block;
+    width: 2rem;
+    text-align: left;
+    font-weight: 600;
+    color: #d44b2b;
+  }
+</style>
+
+</body>
+</html>
